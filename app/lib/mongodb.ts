@@ -1,24 +1,30 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
-const uri = process.env.MONGODB_URI;
-const options = {};
+let cached = global.mongoose;
 
-let client: MongoClient;
-let mongo: Promise<MongoClient>
-
-if(!uri){
-    throw new Error("mongo uri empty")
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
-if(process.env.NODE_ENV === "development"){
-    if(!global._mongoClientPromise){
-        client = new MongoClient(uri, options);
-        global._mongoClientPromise = client.connect();
+export async function connectMongo(){
+    const uri = process.env.MONGODB_URI;
+    if(!uri){
+        throw new Error("db uri is empty")
     }
-    mongo = global._mongoClientPromise;
-}else{
-    client = new MongoClient(uri, options);
-    mongo = client.connect();
-}
+    if(cached.conn){
+        return cached.conn;
+    }
 
-export default mongo;
+    if (!cached.promise) {
+      const options = {
+        bufferCommands: false,
+      };
+  
+      cached.promise = mongoose.connect(uri, options).then((mongoose) => {
+        return mongoose;
+      });
+    }
+  
+    cached.conn = await cached.promise;
+    return cached.conn;
+}

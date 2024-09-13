@@ -6,7 +6,7 @@ export interface IUser extends Document{
 }
 
 const UserSchema: Schema = new Schema({
-    usrename: {type: String},
+    username: {type: String},
     email: {type: String}
 })
 
