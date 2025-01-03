@@ -1,0 +1,28 @@
+.card {
+    height: auto;
+    max-width: 400px;
+    max-height: 600px;
+    width: 100%;
+    padding: 0rem 1rem 1rem 1rem;
+    margin: 1rem;
+    border-radius: 10px;
+    background-color: rgb(230, 198, 176);
+    color: black;
+    display: flex;
+    flex-direction: column;
+    
+    font-family: Garamond;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.image {
+    border-radius: 10px;
+    overflow: hidden;
+}
+.imageContainer	{
+    display: flex;
+    justify-content: center;
+}

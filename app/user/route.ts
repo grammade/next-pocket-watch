@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import {Res} from '@/app/dtos/Response'
 import { findQuery } from '@/app/utils/UrlHelper';
 
-const GET = async (req: Request) => {
+const GET = async () => {
     await connectMongo();
     const users = await User.find()
     return NextResponse.json(users)
@@ -23,7 +23,7 @@ const POST = async (req: Request) => {
 const DELETE = async(req: Request) => {
     await connectMongo();
     const id = findQuery(req.url, "id")
-    let res: Res = {msg: "user(s) deleted", data: null}
+    const res: Res = {msg: "user(s) deleted", data: null}
     if(!id){
         const exUsers = await User.deleteMany({})
         res.data = exUsers
